@@ -1,0 +1,5 @@
+# Master-Render (77 MB) nur lokal; die komprimierte TikTok-Fassung wird committet
+renders/*-9x16.mp4
+snapshots/
+node_modules/
+.hyperframes/

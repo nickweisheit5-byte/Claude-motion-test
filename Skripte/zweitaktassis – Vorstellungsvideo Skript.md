@@ -2,7 +2,7 @@
 tags: [skript, zweitaktassis]
 projekt: "[[zweitaktassis]]"
 erstellt: 2026-10-06
-status: entwurf
+status: fertig
 ---
 # zweitaktassis – Vorstellungsvideo (Skript)
 
@@ -37,3 +37,12 @@ Projekt: [[zweitaktassis]]
 
 ## Nächste Version
 - Echte Clips einbauen (Logo, Pudding-Clip, Klemmer-Clip, Treffen), sobald Material da ist
+
+## Umsetzung (Version 1, 06.10.2026)
+- **Video:** `videos/zweitaktassis-intro/renders/zweitaktassis-vorstellung-tiktok.mp4`, 1080×1920, 30 fps, 37,5 s, -14 LUFS
+- **Projekt:** HyperFrames lokal (`videos/zweitaktassis-intro/index.html`). Der HyperFrames-MCP-Weg über HeyGen ist für Claude Code gesperrt.
+- **Stimme:** ElevenLabs, Sprecher „Lars – Content Creator“ (eleven_multilingual_v2), Take A, ca. 0,06 $ pro Take. Flow: elevenlabs.io/app/flows/0mK8OSi4FvL2Kl97eOjz
+- **Musik:** eigener Beat, mit Python synthetisiert (100 BPM, Zweitakt-Drehzahl-Riser bis zum Drop bei 5,85 s, Ducking unter der Stimme)
+- **SFX:** HyperFrames-Bibliothek (Pixabay-Lizenz)
+- Zahlen im Video wie im Skript; Pudding-Counter mit exakten 1.020.385 Views
+- **Ideen für Version 2:** echte Clips (Pudding, Klemmer, Treffen), Logo, eventuell Nicks eigene Stimme statt KI
