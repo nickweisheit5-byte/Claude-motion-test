@@ -8,8 +8,8 @@ status: entwurf
 
 Projekt: [[zweitaktassis]]
 - Anlass: Recherche für ein Vorstellungsvideo (HyperFrames)
-- Quelle: Supermetrics (TikTok Organic, Instagram Insights, YouTube), Stand 06.10.2026. TikTok-Rohdaten in `zweitaktassis-tiktok-videos-2026-10-06.csv`
-- Hinweis: Vault war in der Cloud-Session nicht verbunden, deshalb im Repo abgelegt. Später in den Vault übernehmen.
+- Quelle: Supermetrics (TikTok Organic, Instagram Insights, YouTube), Stand 06.10.2026. TikTok-Rohdaten in [[zweitaktassis-tiktok-videos-2026-10-06.csv]]
+- Ablage: im Repo erstellt (vault/), danach in den Vault übernommen
 
 ## Wer wir sind
 - **ZweitaktAssis**, Slogan aus der Bio: **„Pfusch ist Kunst“** 🇩🇪

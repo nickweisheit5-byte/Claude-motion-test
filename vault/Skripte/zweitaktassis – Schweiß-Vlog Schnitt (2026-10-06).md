@@ -2,7 +2,7 @@
 tags: [skript, zweitaktassis]
 projekt: "[[zweitaktassis]]"
 erstellt: 2026-10-06
-status: entwurf
+status: fertig
 ---
 # zweitaktassis – Schweiß-Vlog Schnitt
 
@@ -11,7 +11,7 @@ Projekt: [[zweitaktassis]]
 - Vorgaben von Nick: ca. 60 s, Vollbild 9:16, keine Namen einblenden
 
 ## Umsetzung
-- Projekt: `videos/schweiss-vlog/` (HyperFrames)
+- Projekt: `videos/schweiss-vlog/` (HyperFrames). Video: `renders/schweiss-vlog-tiktok.mp4` (9:16, 59,6 s, -14 LUFS)
 - Quelle: komprimierte Version (960×540), Original liegt in Google Drive unter „Test Video“
 - Schnitt: 17 Segmente, 59,6 s. Liste in `segments.json`, die Clips baut `scripts/cut-segments.py`
 - Bild: Crop 304×540 pro Segment auf die Action gesetzt, hochskaliert auf 1080×1920 (lanczos + Schärfen)
