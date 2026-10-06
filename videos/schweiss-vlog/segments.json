@@ -1,0 +1,19 @@
+[
+ {"id":"s01","a":[0.00,1.45],"v":0.00,"cx":480,"label":"Cold open: Versprecher"},
+ {"id":"s02","a":[3.30,9.50],"v":3.30,"cx":480,"label":"Freunde des gepflegten Zweitakt-Motorrennsports, wow"},
+ {"id":"s03","a":[9.80,13.70],"v":9.80,"cx":590,"label":"Moped Nr. 2 / Nr. 3"},
+ {"id":"s04","a":[21.55,24.85],"v":21.55,"cx":500,"label":"Rahmen in Bearbeitung"},
+ {"id":"s05","a":[25.95,29.95],"v":25.95,"cx":490,"label":"Fülldraht-Schweißgerät"},
+ {"id":"s06","a":[35.65,40.10],"v":59.30,"cx":480,"label":"Schweißnähte aalglatt (B-Roll Naht)"},
+ {"id":"s07","a":[49.90,54.55],"v":49.90,"cx":480,"label":"Verstärkungsbleche"},
+ {"id":"s08","a":[76.25,78.80],"v":76.25,"cx":500,"label":"Wie bei Luca, nur besser"},
+ {"id":"s09","a":[82.20,84.00],"v":82.20,"cx":300,"label":"Blick zu Luca"},
+ {"id":"s10","a":[85.40,85.90],"v":85.40,"cx":620,"label":"Oh oh"},
+ {"id":"s11","a":[87.40,93.20],"v":87.40,"cx":480,"label":"Fantastisch angepasstes Blech"},
+ {"id":"s12","a":[93.80,95.80],"v":93.80,"cx":480,"label":"Wer braucht das schon"},
+ {"id":"s13","a":[101.95,105.25],"v":101.95,"cx":500,"label":"Echte Profis"},
+ {"id":"s14","a":[105.80,110.70],"v":105.80,"cx":560,"label":"Echter Rennfahrer"},
+ {"id":"s15","a":[111.25,114.90],"v":111.25,"cx":470,"label":"Keine echten Tuner / Motto"},
+ {"id":"s16","a":[115.00,118.60],"v":115.00,"cx":500,"label":"B-Roll rote Simson"},
+ {"id":"s17","a":[120.30,123.80],"v":120.30,"cx":470,"label":"Immer auf den Punkt"}
+]

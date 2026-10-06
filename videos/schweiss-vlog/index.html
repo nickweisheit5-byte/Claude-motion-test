@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>ZweitaktAssis – Schweiß-Vlog</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Anton";
+        src: url("assets/fonts/anton-latin.woff2") format("woff2");
+        font-weight: 400;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-latin.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      :root {
+        --ink: #0b0b0a;
+        --yellow: #f2c200;
+        --rust: #d9541e;
+        --red: #e8392b;
+        --paper: #f4efe6;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+        font-family: "Inter", sans-serif;
+        color: var(--paper);
+      }
+      #stage,
+      .vwrap,
+      .vpunch {
+        position: absolute;
+        inset: 0;
+      }
+      .vid {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      #shade {
+        background:
+          linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 22%),
+          linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 38%);
+        z-index: 20;
+      }
+      #flash {
+        background: #fff;
+        opacity: 0;
+        z-index: 80;
+      }
+
+      /* ---------- Untertitel ---------- */
+      #caps {
+        position: absolute;
+        left: 50px;
+        right: 50px;
+        top: 1250px;
+        height: 300px;
+        z-index: 40;
+      }
+      .cap {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        gap: 6px 22px;
+        opacity: 0;
+      }
+      .cw {
+        display: block;
+        font-family: "Anton", sans-serif;
+        font-size: 96px;
+        line-height: 1.05;
+        text-transform: uppercase;
+        color: #fff;
+        paint-order: stroke fill;
+        -webkit-text-stroke: 14px #000;
+        text-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+      }
+
+      /* ---------- Overlays ---------- */
+      .ov {
+        position: absolute;
+        z-index: 50;
+        opacity: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      .ov span {
+        display: block;
+      }
+      .banner {
+        left: 60px;
+        right: 60px;
+        top: 200px;
+      }
+      .banner span {
+        background: var(--yellow);
+        color: var(--ink);
+        font-family: "Anton", sans-serif;
+        font-size: 74px;
+        line-height: 1.02;
+        text-transform: uppercase;
+        padding: 18px 30px 12px;
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+        transform: rotate(-2deg);
+        max-width: 960px;
+      }
+      .banner.b2 {
+        top: 360px;
+      }
+      .banner.b2 span {
+        background: var(--paper);
+        transform: rotate(2deg);
+      }
+      .stamp {
+        left: 40px;
+        right: 40px;
+        top: 700px;
+      }
+      .stamp span {
+        font-family: "Anton", sans-serif;
+        font-size: 110px;
+        line-height: 0.98;
+        text-transform: uppercase;
+        color: var(--yellow);
+        border: 12px solid var(--yellow);
+        padding: 24px 34px 14px;
+        background: rgba(0, 0, 0, 0.45);
+        transform: rotate(-7deg);
+        max-width: 940px;
+      }
+      .stamp.red span {
+        color: var(--red);
+        border-color: var(--red);
+      }
+      .big {
+        left: 0;
+        right: 0;
+        top: 740px;
+      }
+      .big span {
+        font-family: "Anton", sans-serif;
+        font-size: 190px;
+        line-height: 1;
+        text-transform: uppercase;
+        color: #fff;
+        paint-order: stroke fill;
+        -webkit-text-stroke: 18px #000;
+      }
+      .sticker {
+        right: 70px;
+        top: 560px;
+      }
+      .sticker span {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Inter", sans-serif;
+        font-weight: 900;
+        font-size: 46px;
+        padding: 18px 30px;
+        border-radius: 999px;
+        transform: rotate(4deg);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      }
+      .wow span {
+        font-family: "Anton", sans-serif;
+        font-size: 150px;
+        color: var(--yellow);
+        paint-order: stroke fill;
+        -webkit-text-stroke: 14px #000;
+      }
+      .w1 { left: 70px; top: 520px; }
+      .w2 { right: 90px; top: 640px; }
+      .w3 { left: 160px; top: 860px; }
+      .w4 { right: 60px; top: 960px; }
+      .w5 { left: 80px; top: 1080px; }
+      .w6 { right: 150px; top: 380px; }
+      .w7 { left: 400px; top: 560px; }
+      .w2 span, .w5 span { color: var(--paper); }
+      .w4 span, .w7 span { color: var(--rust); }
+      .stars {
+        left: 0;
+        right: 0;
+        top: 470px;
+      }
+      .stars span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        font-size: 120px;
+        line-height: 1;
+        color: var(--yellow);
+        paint-order: stroke fill;
+        -webkit-text-stroke: 8px #000;
+        letter-spacing: 0.08em;
+      }
+      .stars .s-off {
+        opacity: 0;
+      }
+      .ring {
+        left: 290px;
+        top: 760px;
+        width: 500px;
+        height: 330px;
+        border: 12px solid var(--red);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.35);
+      }
+
+      /* ---------- Endkarte ---------- */
+      #endcard {
+        z-index: 60;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 26px;
+        padding-bottom: 300px;
+        background: radial-gradient(ellipse 90% 60% at 50% 45%, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.35));
+        opacity: 0;
+      }
+      #ec-handle {
+        font-family: "Anton", sans-serif;
+        font-size: 128px;
+        color: #fff;
+        text-transform: uppercase;
+      }
+      #ec-part {
+        display: block;
+        background: var(--yellow);
+        color: var(--ink);
+        font-family: "Anton", sans-serif;
+        font-size: 96px;
+        padding: 16px 40px 8px;
+        text-transform: uppercase;
+        transform: rotate(-3deg);
+      }
+      #ec-motto {
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 34px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: rgba(244, 239, 230, 0.75);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="59.55" data-width="1080" data-height="1920">
+      <div id="stage">
+      <div class="vwrap" id="w-s01"><div class="vpunch"><video id="s01" class="clip vid" src="assets/clips/s01.mp4" data-start="0.0" data-duration="1.45" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s02"><div class="vpunch"><video id="s02" class="clip vid" src="assets/clips/s02.mp4" data-start="1.45" data-duration="6.2" data-track-index="2" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s03"><div class="vpunch"><video id="s03" class="clip vid" src="assets/clips/s03.mp4" data-start="7.65" data-duration="3.9" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s04"><div class="vpunch"><video id="s04" class="clip vid" src="assets/clips/s04.mp4" data-start="11.55" data-duration="3.3" data-track-index="2" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s05"><div class="vpunch"><video id="s05" class="clip vid" src="assets/clips/s05.mp4" data-start="14.85" data-duration="4.0" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s06"><div class="vpunch"><video id="s06" class="clip vid" src="assets/clips/s06.mp4" data-start="18.85" data-duration="4.45" data-track-index="2" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s07"><div class="vpunch"><video id="s07" class="clip vid" src="assets/clips/s07.mp4" data-start="23.3" data-duration="4.65" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s08"><div class="vpunch"><video id="s08" class="clip vid" src="assets/clips/s08.mp4" data-start="27.95" data-duration="2.55" data-track-index="2" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s09"><div class="vpunch"><video id="s09" class="clip vid" src="assets/clips/s09.mp4" data-start="30.5" data-duration="1.8" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s10"><div class="vpunch"><video id="s10" class="clip vid" src="assets/clips/s10.mp4" data-start="32.3" data-duration="0.5" data-track-index="2" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s11"><div class="vpunch"><video id="s11" class="clip vid" src="assets/clips/s11.mp4" data-start="32.8" data-duration="5.8" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s12"><div class="vpunch"><video id="s12" class="clip vid" src="assets/clips/s12.mp4" data-start="38.6" data-duration="2.0" data-track-index="2" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s13"><div class="vpunch"><video id="s13" class="clip vid" src="assets/clips/s13.mp4" data-start="40.6" data-duration="3.3" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s14"><div class="vpunch"><video id="s14" class="clip vid" src="assets/clips/s14.mp4" data-start="43.9" data-duration="4.9" data-track-index="2" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s15"><div class="vpunch"><video id="s15" class="clip vid" src="assets/clips/s15.mp4" data-start="48.8" data-duration="3.65" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s16"><div class="vpunch"><video id="s16" class="clip vid" src="assets/clips/s16.mp4" data-start="52.45" data-duration="3.6" data-track-index="2" data-has-audio="true" playsinline></video></div></div>
+      <div class="vwrap" id="w-s17"><div class="vpunch"><video id="s17" class="clip vid" src="assets/clips/s17.mp4" data-start="56.05" data-duration="3.5" data-track-index="1" data-has-audio="true" playsinline></video></div></div>
+      </div>
+      <div id="shade" class="layer"></div>
+      <div class="ov stamp red" id="ov00"><span>TAKE 1 ❌</span></div>
+      <div class="ov banner" id="ov01"><span>ZWEITAKT-MOTORRENNSPORT 🏁</span></div>
+      <div class="ov wow w1" id="ov02"><span>WOW</span></div>
+      <div class="ov wow w2" id="ov03"><span>WOW</span></div>
+      <div class="ov wow w3" id="ov04"><span>WOW</span></div>
+      <div class="ov wow w4" id="ov05"><span>WOW</span></div>
+      <div class="ov wow w5" id="ov06"><span>WOW</span></div>
+      <div class="ov wow w6" id="ov07"><span>WOW</span></div>
+      <div class="ov wow w7" id="ov08"><span>WOW</span></div>
+      <div class="ov banner" id="ov09"><span>MOPED NR. 2</span></div>
+      <div class="ov banner b2" id="ov10"><span>… ODER NR. 3? 🤔</span></div>
+      <div class="ov banner" id="ov11"><span>RAHMEN IN BEARBEITUNG 🚧</span></div>
+      <div class="ov banner" id="ov12"><span>DAS WUNDERVOLLSTE FÜLLDRAHT-SCHWEISSGERÄT</span></div>
+      <div class="ov stars" id="ov13"><span class="s-on">★★★★★</span><span class="s-off">★☆☆☆☆</span></div>
+      <div class="ov stamp red" id="ov14"><span>GEHT ABSOLUT SCHEISSE</span></div>
+      <div class="ov banner" id="ov15"><span>AALGLATT ✨</span></div>
+      <div class="ov sticker" id="ov16"><span>🪞 SPIEGEL-FINISH</span></div>
+      <div class="ov stamp" id="ov17"><span>SCHLEIFEN? NÖ.</span></div>
+      <div class="ov banner" id="ov18"><span>VERSTÄRKUNGSBLECHE 💪</span></div>
+      <div class="ov sticker" id="ov19"><span>↓ RAHMENFUSS</span></div>
+      <div class="ov banner" id="ov20"><span>WIE BEI LUCA.</span></div>
+      <div class="ov stamp" id="ov21"><span>NUR BESSER 😏</span></div>
+      <div class="ov banner" id="ov22"><span>KURZ RÜBER ZU LUCA 👀</span></div>
+      <div class="ov big" id="ov23"><span>OH OH 😬</span></div>
+      <div class="ov banner" id="ov24"><span>„FANTASTISCH ANGEPASST“</span></div>
+      <div class="ov ring" id="ov25"></div>
+      <div class="ov stamp red" id="ov26"><span>NICHT ABGESCHLIFFEN ❌</span></div>
+      <div class="ov banner" id="ov27"><span>WER BRAUCHT DAS SCHON? 🤷</span></div>
+      <div class="ov stamp" id="ov28"><span>ECHTE PROFIS SCHLEIFEN NICHT.</span></div>
+      <div class="ov banner" id="ov29"><span>ECHTER RENNFAHRER =</span></div>
+      <div class="ov big" id="ov30"><span>2× PRO WOCHE</span></div>
+      <div class="ov stamp red" id="ov31"><span>AUF DIE FRESSE 💥</span></div>
+      <div class="ov banner" id="ov32"><span>ALLES ANDERE = KEINE ECHTEN TUNER</span></div>
+      <div class="ov sticker" id="ov33"><span>DAS MOTTO 👆</span></div>
+      <div class="ov stamp" id="ov34"><span>PFUSCH IST KUNST.</span></div>
+      <div class="ov sticker" id="ov35"><span>Moped Nr. 2 · in Arbeit 🔧</span></div>
+      <div class="ov banner" id="ov36"><span>IMMER AUF DEN PUNKT 🎯</span></div>
+      <div id="caps">
+        <div class="cap" id="c000"><span class="cw" id="c000w0">Freunde</span><span class="cw" id="c000w1">des</span><span class="cw" id="c000w2">gepflegten-</span></div>
+        <div class="cap" id="c001"><span class="cw" id="c001w0">Es</span><span class="cw" id="c001w1">geht</span><span class="cw" id="c001w2">noch</span></div>
+        <div class="cap" id="c002"><span class="cw" id="c002w0">nicht</span><span class="cw" id="c002w1">los.</span></div>
+        <div class="cap" id="c003"><span class="cw" id="c003w0">So</span><span class="cw" id="c003w1">Freunde</span><span class="cw" id="c003w2">des</span></div>
+        <div class="cap" id="c004"><span class="cw" id="c004w0">gepflegten</span><span class="cw" id="c004w1">Zweitakt-Motorrennsports.</span></div>
+        <div class="cap" id="c005"><span class="cw" id="c005w0">Wow</span><span class="cw" id="c005w1">wow</span><span class="cw" id="c005w2">wow</span></div>
+        <div class="cap" id="c006"><span class="cw" id="c006w0">wow</span></div>
+        <div class="cap" id="c007"><span class="cw" id="c007w0">wow</span><span class="cw" id="c007w1">wow</span><span class="cw" id="c007w2">wow.</span></div>
+        <div class="cap" id="c008"><span class="cw" id="c008w0">Wir</span><span class="cw" id="c008w1">sind</span><span class="cw" id="c008w2">heute</span></div>
+        <div class="cap" id="c009"><span class="cw" id="c009w0">natürlich</span><span class="cw" id="c009w1">dabei.</span></div>
+        <div class="cap" id="c010"><span class="cw" id="c010w0">Bauen</span><span class="cw" id="c010w1">Moped</span><span class="cw" id="c010w2">Nummer</span></div>
+        <div class="cap" id="c011"><span class="cw" id="c011w0">zwei</span><span class="cw" id="c011w1">Nummer</span><span class="cw" id="c011w2">drei</span></div>
+        <div class="cap" id="c012"><span class="cw" id="c012w0">je</span><span class="cw" id="c012w1">nachdem</span><span class="cw" id="c012w2">was</span></div>
+        <div class="cap" id="c013"><span class="cw" id="c013w0">zuerst</span><span class="cw" id="c013w1">fertig</span><span class="cw" id="c013w2">wird</span></div>
+        <div class="cap" id="c014"><span class="cw" id="c014w0">oder</span><span class="cw" id="c014w1">zuerst</span><span class="cw" id="c014w2">kommt.</span></div>
+        <div class="cap" id="c015"><span class="cw" id="c015w0">auf</span><span class="cw" id="c015w1">jeden</span><span class="cw" id="c015w2">Fall</span></div>
+        <div class="cap" id="c016"><span class="cw" id="c016w0">haben</span><span class="cw" id="c016w1">wir</span><span class="cw" id="c016w2">jetzt</span></div>
+        <div class="cap" id="c017"><span class="cw" id="c017w0">hier</span><span class="cw" id="c017w1">noch</span><span class="cw" id="c017w2">ein</span></div>
+        <div class="cap" id="c018"><span class="cw" id="c018w0">bisschen</span><span class="cw" id="c018w1">Rahmen</span><span class="cw" id="c018w2">in</span></div>
+        <div class="cap" id="c019"><span class="cw" id="c019w0">Bearbeitung.</span></div>
+        <div class="cap" id="c020"><span class="cw" id="c020w0">müssen</span><span class="cw" id="c020w1">wir</span><span class="cw" id="c020w2">ein</span></div>
+        <div class="cap" id="c021"><span class="cw" id="c021w0">bisschen</span><span class="cw" id="c021w1">wieder</span><span class="cw" id="c021w2">mit</span></div>
+        <div class="cap" id="c022"><span class="cw" id="c022w0">dem</span><span class="cw" id="c022w1">wundervollsten</span><span class="cw" id="c022w2">Fülldraht-Schweißgerät</span></div>
+        <div class="cap" id="c023"><span class="cw" id="c023w0">was</span><span class="cw" id="c023w1">absolut</span><span class="cw" id="c023w2">scheiße</span></div>
+        <div class="cap" id="c024"><span class="cw" id="c024w0">geht.</span></div>
+        <div class="cap" id="c025"><span class="cw" id="c025w0">Nee</span><span class="cw" id="c025w1">das</span><span class="cw" id="c025w2">ist</span></div>
+        <div class="cap" id="c026"><span class="cw" id="c026w0">wunderschön.</span></div>
+        <div class="cap" id="c027"><span class="cw" id="c027w0">Schweißnähte</span><span class="cw" id="c027w1">aalglatt</span><span class="cw" id="c027w2">da</span></div>
+        <div class="cap" id="c028"><span class="cw" id="c028w0">kannst</span><span class="cw" id="c028w1">dich</span><span class="cw" id="c028w2">drin</span></div>
+        <div class="cap" id="c029"><span class="cw" id="c029w0">spiegeln</span></div>
+        <div class="cap" id="c030"><span class="cw" id="c030w0">und</span><span class="cw" id="c030w1">du</span><span class="cw" id="c030w2">musst</span></div>
+        <div class="cap" id="c031"><span class="cw" id="c031w0">sie</span><span class="cw" id="c031w1">nicht</span><span class="cw" id="c031w2">mal</span></div>
+        <div class="cap" id="c032"><span class="cw" id="c032w0">abschleifen.</span></div>
+        <div class="cap" id="c033"><span class="cw" id="c033w0">Hier</span><span class="cw" id="c033w1">wunderschöne</span><span class="cw" id="c033w2">Verstärkungsbleche.</span></div>
+        <div class="cap" id="c034"><span class="cw" id="c034w0">Oh</span><span class="cw" id="c034w1">die</span><span class="cw" id="c034w2">sind</span></div>
+        <div class="cap" id="c035"><span class="cw" id="c035w0">schön.</span></div>
+        <div class="cap" id="c036"><span class="cw" id="c036w0">Die</span><span class="cw" id="c036w1">du</span><span class="cw" id="c036w2">dir</span></div>
+        <div class="cap" id="c037"><span class="cw" id="c037w0">noch</span><span class="cw" id="c037w1">mal</span><span class="cw" id="c037w2">auf</span></div>
+        <div class="cap" id="c038"><span class="cw" id="c038w0">den</span><span class="cw" id="c038w1">Rahmenfuß</span><span class="cw" id="c038w2">knallen</span></div>
+        <div class="cap" id="c039"><span class="cw" id="c039w0">kannst.</span></div>
+        <div class="cap" id="c040"><span class="cw" id="c040w0">Vorne</span></div>
+        <div class="cap" id="c041"><span class="cw" id="c041w0">Also</span><span class="cw" id="c041w1">wie</span><span class="cw" id="c041w2">bei</span></div>
+        <div class="cap" id="c042"><span class="cw" id="c042w0">mir.</span></div>
+        <div class="cap" id="c043"><span class="cw" id="c043w0">Genau</span></div>
+        <div class="cap" id="c044"><span class="cw" id="c044w0">wie</span><span class="cw" id="c044w1">bei</span><span class="cw" id="c044w2">Luca.</span></div>
+        <div class="cap" id="c045"><span class="cw" id="c045w0">Nur</span><span class="cw" id="c045w1">besser.</span></div>
+        <div class="cap" id="c046"><span class="cw" id="c046w0">Nur</span><span class="cw" id="c046w1">ein</span><span class="cw" id="c046w2">bisschen</span></div>
+        <div class="cap" id="c047"><span class="cw" id="c047w0">Wir</span><span class="cw" id="c047w1">können</span><span class="cw" id="c047w2">ja</span></div>
+        <div class="cap" id="c048"><span class="cw" id="c048w0">trotzdem</span><span class="cw" id="c048w1">mal</span><span class="cw" id="c048w2">kurz</span></div>
+        <div class="cap" id="c049"><span class="cw" id="c049w0">drübergucken</span><span class="cw" id="c049w1">wie</span><span class="cw" id="c049w2">es</span></div>
+        <div class="cap" id="c050"><span class="cw" id="c050w0">bei</span><span class="cw" id="c050w1">dem</span></div>
+        <div class="cap" id="c051"><span class="cw" id="c051w0">Oh</span><span class="cw" id="c051w1">oh.</span></div>
+        <div class="cap" id="c052"><span class="cw" id="c052w0">Da</span><span class="cw" id="c052w1">haben</span><span class="cw" id="c052w2">wir</span></div>
+        <div class="cap" id="c053"><span class="cw" id="c053w0">nämlich</span><span class="cw" id="c053w1">auch</span><span class="cw" id="c053w2">ein</span></div>
+        <div class="cap" id="c054"><span class="cw" id="c054w0">fantastisch</span><span class="cw" id="c054w1">angepasstes</span><span class="cw" id="c054w2">Blech</span></div>
+        <div class="cap" id="c055"><span class="cw" id="c055w0">wo</span><span class="cw" id="c055w1">auch</span><span class="cw" id="c055w2">vor</span></div>
+        <div class="cap" id="c056"><span class="cw" id="c056w0">dem</span><span class="cw" id="c056w1">Schweißen</span><span class="cw" id="c056w2">nicht</span></div>
+        <div class="cap" id="c057"><span class="cw" id="c057w0">abgeschliffen</span><span class="cw" id="c057w1">wurde.</span></div>
+        <div class="cap" id="c058"><span class="cw" id="c058w0">Aber</span><span class="cw" id="c058w1">das</span><span class="cw" id="c058w2">wer</span></div>
+        <div class="cap" id="c059"><span class="cw" id="c059w0">wer</span><span class="cw" id="c059w1">wer</span><span class="cw" id="c059w2">braucht</span></div>
+        <div class="cap" id="c060"><span class="cw" id="c060w0">das</span><span class="cw" id="c060w1">schon?</span></div>
+        <div class="cap" id="c061"><span class="cw" id="c061w0">Echte</span><span class="cw" id="c061w1">Profis</span><span class="cw" id="c061w2">schweißen</span></div>
+        <div class="cap" id="c062"><span class="cw" id="c062w0">ohne</span><span class="cw" id="c062w1">abzuschleifen.</span></div>
+        <div class="cap" id="c063"><span class="cw" id="c063w0">Ganz</span><span class="cw" id="c063w1">einfach.</span></div>
+        <div class="cap" id="c064"><span class="cw" id="c064w0">Ich</span><span class="cw" id="c064w1">finde</span><span class="cw" id="c064w2">ein</span></div>
+        <div class="cap" id="c065"><span class="cw" id="c065w0">echter</span><span class="cw" id="c065w1">Rennfahrer</span></div>
+        <div class="cap" id="c066"><span class="cw" id="c066w0">der</span><span class="cw" id="c066w1">legt</span><span class="cw" id="c066w2">sich</span></div>
+        <div class="cap" id="c067"><span class="cw" id="c067w0">mindestens</span><span class="cw" id="c067w1">zweimal</span><span class="cw" id="c067w2">die</span></div>
+        <div class="cap" id="c068"><span class="cw" id="c068w0">Woche</span><span class="cw" id="c068w1">auf</span><span class="cw" id="c068w2">die</span></div>
+        <div class="cap" id="c069"><span class="cw" id="c069w0">Fresse</span><span class="cw" id="c069w1">weil</span><span class="cw" id="c069w2">der</span></div>
+        <div class="cap" id="c070"><span class="cw" id="c070w0">Rahmen</span><span class="cw" id="c070w1">zerbricht.</span></div>
+        <div class="cap" id="c071"><span class="cw" id="c071w0">Weil</span><span class="cw" id="c071w1">alles</span><span class="cw" id="c071w2">andere</span></div>
+        <div class="cap" id="c072"><span class="cw" id="c072w0">das</span><span class="cw" id="c072w1">sind</span><span class="cw" id="c072w2">keine</span></div>
+        <div class="cap" id="c073"><span class="cw" id="c073w0">echten</span><span class="cw" id="c073w1">Tuner.</span></div>
+        <div class="cap" id="c074"><span class="cw" id="c074w0">Und</span><span class="cw" id="c074w1">das</span><span class="cw" id="c074w2">ist</span></div>
+        <div class="cap" id="c075"><span class="cw" id="c075w0">das</span><span class="cw" id="c075w1">Motto</span><span class="cw" id="c075w2">von</span></div>
+        <div class="cap" id="c076"><span class="cw" id="c076w0">diesem</span><span class="cw" id="c076w1">Mann.</span></div>
+        <div class="cap" id="c077"><span class="cw" id="c077w0">Wir</span><span class="cw" id="c077w1">müssen</span><span class="cw" id="c077w2">immer</span></div>
+        <div class="cap" id="c078"><span class="cw" id="c078w0">auf</span><span class="cw" id="c078w1">den</span><span class="cw" id="c078w2">Punkt</span></div>
+        <div class="cap" id="c079"><span class="cw" id="c079w0">egal</span><span class="cw" id="c079w1">was</span><span class="cw" id="c079w2">wir</span></div>
+        <div class="cap" id="c080"><span class="cw" id="c080w0">bauen.</span></div>
+      </div>
+      <div id="endcard" class="layer">
+        <div id="ec-handle">@zweitaktassis</div>
+        <div id="ec-part">Teil 2 kommt 🔧</div>
+        <div id="ec-motto">Pfusch ist Kunst</div>
+      </div>
+      <div id="flash" class="layer" data-layout-allow-occlusion></div>
+
+      <audio id="beat" src="assets/audio/beat.mp3" data-start="0" data-duration="59.55" data-track-index="20" data-volume="1" data-automation="{&quot;version&quot;: 1, &quot;lanes&quot;: [{&quot;target&quot;: &quot;volume&quot;, &quot;points&quot;: [{&quot;t&quot;: 0, &quot;v&quot;: 0}, {&quot;t&quot;: 1.4, &quot;v&quot;: 0}, {&quot;t&quot;: 1.6, &quot;v&quot;: 0.2}, {&quot;t&quot;: 52.25, &quot;v&quot;: 0.2}, {&quot;t&quot;: 52.650000000000006, &quot;v&quot;: 0.7}, {&quot;t&quot;: 55.95, &quot;v&quot;: 0.7}, {&quot;t&quot;: 56.25, &quot;v&quot;: 0.22}, {&quot;t&quot;: 57.349999999999994, &quot;v&quot;: 0.22}, {&quot;t&quot;: 57.949999999999996, &quot;v&quot;: 0.5}, {&quot;t&quot;: 59.449999999999996, &quot;v&quot;: 0}]}]}"></audio>
+      <audio id="sfx-00" src="assets/sfx/impact-bass-1.mp3" data-start="0.75" data-duration="1.5" data-track-index="30" data-volume="0.55"></audio>
+      <audio id="sfx-01" src="assets/sfx/pop.mp3" data-start="2.81" data-duration="0.7" data-track-index="31" data-volume="0.3"></audio>
+      <audio id="sfx-02" src="assets/sfx/pop.mp3" data-start="4.75" data-duration="0.7" data-track-index="32" data-volume="0.25"></audio>
+      <audio id="sfx-03" src="assets/sfx/pop.mp3" data-start="5.07" data-duration="0.7" data-track-index="33" data-volume="0.25"></audio>
+      <audio id="sfx-04" src="assets/sfx/pop.mp3" data-start="5.29" data-duration="0.7" data-track-index="34" data-volume="0.25"></audio>
+      <audio id="sfx-05" src="assets/sfx/pop.mp3" data-start="5.33" data-duration="0.7" data-track-index="35" data-volume="0.25"></audio>
+      <audio id="sfx-06" src="assets/sfx/pop.mp3" data-start="5.97" data-duration="0.7" data-track-index="30" data-volume="0.25"></audio>
+      <audio id="sfx-07" src="assets/sfx/pop.mp3" data-start="6.01" data-duration="0.7" data-track-index="31" data-volume="0.25"></audio>
+      <audio id="sfx-08" src="assets/sfx/pop.mp3" data-start="6.05" data-duration="0.7" data-track-index="32" data-volume="0.25"></audio>
+      <audio id="sfx-09" src="assets/sfx/pop.mp3" data-start="8.09" data-duration="0.7" data-track-index="33" data-volume="0.3"></audio>
+      <audio id="sfx-10" src="assets/sfx/pop.mp3" data-start="9.01" data-duration="0.7" data-track-index="34" data-volume="0.3"></audio>
+      <audio id="sfx-11" src="assets/sfx/pop.mp3" data-start="13.34" data-duration="0.7" data-track-index="35" data-volume="0.3"></audio>
+      <audio id="sfx-12" src="assets/sfx/pop.mp3" data-start="15.92" data-duration="0.7" data-track-index="30" data-volume="0.3"></audio>
+      <audio id="sfx-13" src="assets/sfx/impact-bass-1.mp3" data-start="18.3" data-duration="1.5" data-track-index="31" data-volume="0.55"></audio>
+      <audio id="sfx-14" src="assets/sfx/pop.mp3" data-start="20.5" data-duration="0.7" data-track-index="32" data-volume="0.3"></audio>
+      <audio id="sfx-15" src="assets/sfx/pop.mp3" data-start="21.52" data-duration="0.7" data-track-index="33" data-volume="0.3"></audio>
+      <audio id="sfx-16" src="assets/sfx/impact-bass-1.mp3" data-start="22.8" data-duration="1.5" data-track-index="34" data-volume="0.55"></audio>
+      <audio id="sfx-17" src="assets/sfx/pop.mp3" data-start="23.9" data-duration="0.7" data-track-index="35" data-volume="0.3"></audio>
+      <audio id="sfx-18" src="assets/sfx/pop.mp3" data-start="26.86" data-duration="0.7" data-track-index="30" data-volume="0.3"></audio>
+      <audio id="sfx-19" src="assets/sfx/pop.mp3" data-start="29.52" data-duration="0.7" data-track-index="31" data-volume="0.3"></audio>
+      <audio id="sfx-20" src="assets/sfx/impact-bass-1.mp3" data-start="30.08" data-duration="1.5" data-track-index="32" data-volume="0.55"></audio>
+      <audio id="sfx-21" src="assets/sfx/pop.mp3" data-start="31.34" data-duration="0.7" data-track-index="33" data-volume="0.3"></audio>
+      <audio id="sfx-22" src="assets/sfx/impact-bass-2.mp3" data-start="32.35" data-duration="1.5" data-track-index="34" data-volume="0.5"></audio>
+      <audio id="sfx-23" src="assets/sfx/pop.mp3" data-start="34.36" data-duration="0.7" data-track-index="35" data-volume="0.3"></audio>
+      <audio id="sfx-24" src="assets/sfx/impact-bass-1.mp3" data-start="37.82" data-duration="1.5" data-track-index="30" data-volume="0.55"></audio>
+      <audio id="sfx-25" src="assets/sfx/pop.mp3" data-start="39.98" data-duration="0.7" data-track-index="31" data-volume="0.3"></audio>
+      <audio id="sfx-26" src="assets/sfx/impact-bass-1.mp3" data-start="40.97" data-duration="1.5" data-track-index="32" data-volume="0.55"></audio>
+      <audio id="sfx-27" src="assets/sfx/pop.mp3" data-start="44.72" data-duration="0.7" data-track-index="33" data-volume="0.3"></audio>
+      <audio id="sfx-28" src="assets/sfx/impact-bass-2.mp3" data-start="46.8" data-duration="1.5" data-track-index="34" data-volume="0.5"></audio>
+      <audio id="sfx-29" src="assets/sfx/impact-bass-1.mp3" data-start="47.58" data-duration="1.5" data-track-index="35" data-volume="0.55"></audio>
+      <audio id="sfx-30" src="assets/sfx/pop.mp3" data-start="50.01" data-duration="0.7" data-track-index="30" data-volume="0.3"></audio>
+      <audio id="sfx-31" src="assets/sfx/pop.mp3" data-start="51.67" data-duration="0.7" data-track-index="31" data-volume="0.3"></audio>
+      <audio id="sfx-32" src="assets/sfx/impact-bass-1.mp3" data-start="52.7" data-duration="1.5" data-track-index="32" data-volume="0.55"></audio>
+      <audio id="sfx-33" src="assets/sfx/pop.mp3" data-start="53.85" data-duration="0.7" data-track-index="33" data-volume="0.3"></audio>
+      <audio id="sfx-34" src="assets/sfx/pop.mp3" data-start="57.11" data-duration="0.7" data-track-index="34" data-volume="0.3"></audio>
+      <audio id="sfx-35" src="assets/sfx/glitch-1.mp3" data-start="1.4" data-duration="0.8" data-track-index="35" data-volume="0.35"></audio>
+      <audio id="sfx-36" src="assets/sfx/whoosh.mp3" data-start="52.35" data-duration="0.6" data-track-index="30" data-volume="0.4"></audio>
+    </div>
+
+    <script>
+      const D = {"caps": [{"id": "c000", "start": 0.08, "end": 0.72, "words": [0.08, 0.48, 0.64]}, {"id": "c001", "start": 0.72, "end": 1.02, "words": [0.72, 0.8, 0.92]}, {"id": "c002", "start": 1.02, "end": 1.45, "words": [1.02, 1.16]}, {"id": "c003", "start": 1.55, "end": 2.169, "words": [1.55, 1.75, 2.03]}, {"id": "c004", "start": 2.169, "end": 4.75, "words": [2.169, 2.81]}, {"id": "c005", "start": 4.75, "end": 5.33, "words": [4.75, 5.07, 5.29]}, {"id": "c006", "start": 5.33, "end": 5.83, "words": [5.33]}, {"id": "c007", "start": 5.97, "end": 6.17, "words": [5.97, 5.97, 6.05]}, {"id": "c008", "start": 6.17, "end": 6.81, "words": [6.17, 6.33, 6.57]}, {"id": "c009", "start": 6.81, "end": 7.65, "words": [6.81, 7.23]}, {"id": "c010", "start": 7.71, "end": 8.75, "words": [7.71, 8.09, 8.51]}, {"id": "c011", "start": 8.75, "end": 9.55, "words": [8.75, 9.01, 9.21]}, {"id": "c012", "start": 9.55, "end": 10.09, "words": [9.55, 9.65, 9.93]}, {"id": "c013", "start": 10.09, "end": 10.83, "words": [10.09, 10.33, 10.59]}, {"id": "c014", "start": 10.83, "end": 11.55, "words": [10.83, 11.03, 11.31]}, {"id": "c015", "start": 11.58, "end": 12.42, "words": [11.58, 11.72, 11.94]}, {"id": "c016", "start": 12.42, "end": 12.74, "words": [12.42, 12.58, 12.64]}, {"id": "c017", "start": 12.74, "end": 13.06, "words": [12.74, 12.86, 12.98]}, {"id": "c018", "start": 13.06, "end": 14.09, "words": [13.06, 13.34, 13.78]}, {"id": "c019", "start": 14.28, "end": 14.85, "words": [14.28]}, {"id": "c020", "start": 14.92, "end": 15.2, "words": [14.92, 15.06, 15.12]}, {"id": "c021", "start": 15.2, "end": 15.78, "words": [15.2, 15.44, 15.68]}, {"id": "c022", "start": 15.78, "end": 17.84, "words": [15.78, 15.92, 16.94]}, {"id": "c023", "start": 17.84, "end": 18.62, "words": [17.84, 18.0, 18.3]}, {"id": "c024", "start": 18.62, "end": 18.85, "words": [18.62]}, {"id": "c025", "start": 18.9, "end": 19.4, "words": [18.9, 19.14, 19.3]}, {"id": "c026", "start": 19.4, "end": 19.98, "words": [19.4]}, {"id": "c027", "start": 19.98, "end": 21.1, "words": [19.98, 20.5, 20.98]}, {"id": "c028", "start": 21.1, "end": 21.52, "words": [21.1, 21.28, 21.38]}, {"id": "c029", "start": 21.52, "end": 22.11, "words": [21.52]}, {"id": "c030", "start": 22.22, "end": 22.54, "words": [22.22, 22.28, 22.36]}, {"id": "c031", "start": 22.54, "end": 22.8, "words": [22.54, 22.62, 22.72]}, {"id": "c032", "start": 22.8, "end": 23.3, "words": [22.8]}, {"id": "c033", "start": 23.36, "end": 25.01, "words": [23.36, 23.52, 23.9]}, {"id": "c034", "start": 25.06, "end": 25.78, "words": [25.06, 25.22, 25.5]}, {"id": "c035", "start": 25.78, "end": 25.92, "words": [25.78]}, {"id": "c036", "start": 25.92, "end": 26.26, "words": [25.92, 26.04, 26.14]}, {"id": "c037", "start": 26.26, "end": 26.72, "words": [26.26, 26.44, 26.6]}, {"id": "c038", "start": 26.72, "end": 27.66, "words": [26.72, 26.86, 27.36]}, {"id": "c039", "start": 27.66, "end": 27.94, "words": [27.66]}, {"id": "c040", "start": 27.94, "end": 27.95, "words": [27.94]}, {"id": "c041", "start": 28.0, "end": 28.4, "words": [28.0, 28.16, 28.26]}, {"id": "c042", "start": 28.4, "end": 28.9, "words": [28.4]}, {"id": "c043", "start": 28.9, "end": 29.4, "words": [28.9]}, {"id": "c044", "start": 29.52, "end": 30.08, "words": [29.52, 29.62, 29.74]}, {"id": "c045", "start": 30.08, "end": 30.44, "words": [30.08, 30.22]}, {"id": "c046", "start": 30.44, "end": 30.5, "words": [30.44, 30.5, 30.5]}, {"id": "c047", "start": 30.56, "end": 30.92, "words": [30.56, 30.68, 30.82]}, {"id": "c048", "start": 30.92, "end": 31.52, "words": [30.92, 31.22, 31.34]}, {"id": "c049", "start": 31.52, "end": 32.08, "words": [31.52, 31.96, 32.02]}, {"id": "c050", "start": 32.08, "end": 32.3, "words": [32.08, 32.22]}, {"id": "c051", "start": 32.42, "end": 32.8, "words": [32.42, 32.58]}, {"id": "c052", "start": 32.84, "end": 33.12, "words": [32.84, 32.92, 33.02]}, {"id": "c053", "start": 33.12, "end": 34.36, "words": [33.12, 33.38, 33.54]}, {"id": "c054", "start": 34.36, "end": 35.85, "words": [34.36, 34.76, 35.36]}, {"id": "c055", "start": 36.64, "end": 37.2, "words": [36.64, 36.86, 37.08]}, {"id": "c056", "start": 37.2, "end": 37.82, "words": [37.2, 37.28, 37.64]}, {"id": "c057", "start": 37.82, "end": 38.6, "words": [37.82, 38.34]}, {"id": "c058", "start": 38.64, "end": 39.4, "words": [38.64, 38.92, 39.2]}, {"id": "c059", "start": 39.4, "end": 40.22, "words": [39.4, 39.82, 39.98]}, {"id": "c060", "start": 40.22, "end": 40.6, "words": [40.22, 40.36]}, {"id": "c061", "start": 40.71, "end": 41.83, "words": [40.71, 40.97, 41.35]}, {"id": "c062", "start": 41.83, "end": 43.0, "words": [41.83, 42.07]}, {"id": "c063", "start": 43.15, "end": 43.9, "words": [43.15, 43.43]}, {"id": "c064", "start": 43.98, "end": 44.46, "words": [43.98, 44.12, 44.34]}, {"id": "c065", "start": 44.46, "end": 45.49, "words": [44.46, 44.72]}, {"id": "c066", "start": 45.9, "end": 46.4, "words": [45.9, 46.0, 46.22]}, {"id": "c067", "start": 46.4, "end": 47.16, "words": [46.4, 46.8, 47.06]}, {"id": "c068", "start": 47.16, "end": 47.58, "words": [47.16, 47.34, 47.46]}, {"id": "c069", "start": 47.58, "end": 48.1, "words": [47.58, 47.86, 48.0]}, {"id": "c070", "start": 48.1, "end": 48.8, "words": [48.1, 48.32]}, {"id": "c071", "start": 48.85, "end": 49.51, "words": [48.85, 48.99, 49.25]}, {"id": "c072", "start": 49.51, "end": 50.01, "words": [49.51, 49.63, 49.77]}, {"id": "c073", "start": 50.01, "end": 50.94, "words": [50.01, 50.25]}, {"id": "c074", "start": 51.29, "end": 51.53, "words": [51.29, 51.37, 51.47]}, {"id": "c075", "start": 51.53, "end": 51.97, "words": [51.53, 51.67, 51.87]}, {"id": "c076", "start": 51.97, "end": 52.45, "words": [51.97, 52.15]}, {"id": "c077", "start": 56.13, "end": 56.77, "words": [56.13, 56.27, 56.63]}, {"id": "c078", "start": 56.77, "end": 57.45, "words": [56.77, 56.87, 57.11]}, {"id": "c079", "start": 57.45, "end": 57.85, "words": [57.45, 57.55, 57.71]}, {"id": "c080", "start": 57.85, "end": 58.36, "words": [57.85]}], "ovs": [{"id": "ov00", "t": 0.75, "end": 1.45, "kind": "stamp red"}, {"id": "ov01", "t": 2.81, "end": 7.65, "kind": "banner"}, {"id": "ov02", "t": 4.75, "end": 7.65, "kind": "wow w1"}, {"id": "ov03", "t": 5.07, "end": 7.65, "kind": "wow w2"}, {"id": "ov04", "t": 5.29, "end": 7.65, "kind": "wow w3"}, {"id": "ov05", "t": 5.33, "end": 7.65, "kind": "wow w4"}, {"id": "ov06", "t": 5.97, "end": 7.65, "kind": "wow w5"}, {"id": "ov07", "t": 6.01, "end": 7.65, "kind": "wow w6"}, {"id": "ov08", "t": 6.05, "end": 7.65, "kind": "wow w7"}, {"id": "ov09", "t": 8.09, "end": 11.55, "kind": "banner"}, {"id": "ov10", "t": 9.01, "end": 11.55, "kind": "banner b2"}, {"id": "ov11", "t": 13.34, "end": 14.85, "kind": "banner"}, {"id": "ov12", "t": 15.92, "end": 18.85, "kind": "banner"}, {"id": "ov13", "t": 16.8, "end": 18.85, "kind": "stars"}, {"id": "ov14", "t": 18.3, "end": 18.85, "kind": "stamp red"}, {"id": "ov15", "t": 20.5, "end": 23.3, "kind": "banner"}, {"id": "ov16", "t": 21.52, "end": 23.3, "kind": "sticker"}, {"id": "ov17", "t": 22.8, "end": 23.3, "kind": "stamp"}, {"id": "ov18", "t": 23.9, "end": 27.95, "kind": "banner"}, {"id": "ov19", "t": 26.86, "end": 27.95, "kind": "sticker"}, {"id": "ov20", "t": 29.52, "end": 30.5, "kind": "banner"}, {"id": "ov21", "t": 30.08, "end": 30.5, "kind": "stamp"}, {"id": "ov22", "t": 31.34, "end": 32.3, "kind": "banner"}, {"id": "ov23", "t": 32.35, "end": 32.8, "kind": "big"}, {"id": "ov24", "t": 34.36, "end": 38.6, "kind": "banner"}, {"id": "ov25", "t": 34.8, "end": 38.6, "kind": "ring"}, {"id": "ov26", "t": 37.82, "end": 38.6, "kind": "stamp red"}, {"id": "ov27", "t": 39.98, "end": 40.6, "kind": "banner"}, {"id": "ov28", "t": 40.97, "end": 43.9, "kind": "stamp"}, {"id": "ov29", "t": 44.72, "end": 48.8, "kind": "banner"}, {"id": "ov30", "t": 46.8, "end": 47.46, "kind": "big"}, {"id": "ov31", "t": 47.58, "end": 48.8, "kind": "stamp red"}, {"id": "ov32", "t": 50.01, "end": 52.45, "kind": "banner"}, {"id": "ov33", "t": 51.67, "end": 52.45, "kind": "sticker"}, {"id": "ov34", "t": 52.7, "end": 56.05, "kind": "stamp"}, {"id": "ov35", "t": 53.85, "end": 56.05, "kind": "sticker"}, {"id": "ov36", "t": 57.11, "end": 59.55, "kind": "banner"}], "punch": [18.3, 32.35, 47.58], "shake": [0.75, 18.3, 37.82, 47.58, 52.7], "cuts": [1.45, 7.65, 11.55, 14.85, 18.85, 23.3, 27.95, 30.5, 32.3, 32.8, 38.6, 40.6, 43.9, 48.8, 52.45, 56.05], "clips": [{"id": "s01", "start": 0.0, "dur": 1.45}, {"id": "s02", "start": 1.45, "dur": 6.2}, {"id": "s03", "start": 7.65, "dur": 3.9}, {"id": "s04", "start": 11.55, "dur": 3.3}, {"id": "s05", "start": 14.85, "dur": 4.0}, {"id": "s06", "start": 18.85, "dur": 4.45}, {"id": "s07", "start": 23.3, "dur": 4.65}, {"id": "s08", "start": 27.95, "dur": 2.55}, {"id": "s09", "start": 30.5, "dur": 1.8}, {"id": "s10", "start": 32.3, "dur": 0.5}, {"id": "s11", "start": 32.8, "dur": 5.8}, {"id": "s12", "start": 38.6, "dur": 2.0}, {"id": "s13", "start": 40.6, "dur": 3.3}, {"id": "s14", "start": 43.9, "dur": 4.9}, {"id": "s15", "start": 48.8, "dur": 3.65}, {"id": "s16", "start": 52.45, "dur": 3.6}, {"id": "s17", "start": 56.05, "dur": 3.5}], "endCard": 57.35, "dur": 59.55};
+      const tl = gsap.timeline({ paused: true });
+      const clipAt = (t) => D.clips.find((c) => t >= c.start - 1e-3 && t < c.start + c.dur) || D.clips[D.clips.length - 1];
+
+      // Videos: leichter Push-in pro Clip, Punch-ins auf die Gags
+      D.clips.forEach((c) => {
+        tl.fromTo(`#w-${c.id}`, { scale: 1 }, { scale: 1.05, duration: c.dur, ease: "none" }, c.start);
+      });
+      D.punch.forEach((t) => {
+        const c = clipAt(t);
+        tl.to(`#w-${c.id} .vpunch`, { keyframes: { scale: [1, 1.22, 1.18] }, duration: 0.35, ease: "power3.out" }, t);
+      });
+      D.shake.forEach((t) => {
+        tl.to("#stage", { keyframes: { x: [0, -18, 16, -10, 6, 0], y: [0, 10, -8, 5, 0, 0] }, duration: 0.32, ease: "none" }, t);
+      });
+      D.cuts.forEach((t) => {
+        tl.fromTo("#flash", { opacity: 0.18 }, { opacity: 0, duration: 0.12, ease: "power1.out", immediateRender: false }, t);
+      });
+
+      // Untertitel: Gruppe ein, aktives Wort gelb
+      D.caps.forEach((c) => {
+        tl.set(`#${c.id}`, { opacity: 1 }, c.start);
+        c.words.forEach((t, j) => {
+          const w = `#${c.id}w${j}`;
+          tl.fromTo(w, { scale: 0.86, color: "#ffffff" }, { scale: 1, color: "#f2c200", duration: 0.12, ease: "back.out(3)", immediateRender: false }, t);
+          const next = j + 1 < c.words.length ? c.words[j + 1] : c.end;
+          tl.set(w, { color: "#ffffff" }, Math.max(t + 0.13, next));
+        });
+        tl.set(`#${c.id}`, { opacity: 0 }, c.end);
+      });
+
+      // Overlays
+      D.ovs.forEach((o) => {
+        const k = o.kind.split(" ")[0];
+        const el = `#${o.id}`;
+        tl.set(el, { opacity: 1 }, o.t);
+        if (k === "banner") {
+          tl.fromTo(`${el} span`, { y: -60, scale: 0.8 }, { y: 0, scale: 1, duration: 0.3, ease: "back.out(2.4)", immediateRender: false }, o.t);
+        } else if (k === "stamp") {
+          tl.fromTo(`${el} span`, { scale: 2.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.18, ease: "power4.in", immediateRender: false }, o.t - 0.1);
+        } else if (k === "big") {
+          tl.fromTo(`${el} span`, { scale: 0.3 }, { scale: 1, duration: 0.25, ease: "back.out(3)", immediateRender: false }, o.t);
+        } else if (k === "sticker") {
+          tl.fromTo(`${el} span`, { scale: 0, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(3)", immediateRender: false }, o.t);
+        } else if (k === "wow") {
+          tl.fromTo(`${el} span`, { scale: 0, rotation: -20 }, { scale: 1, rotation: 8, duration: 0.22, ease: "back.out(4)", immediateRender: false }, o.t);
+        } else if (k === "stars") {
+          tl.fromTo(`${el} .s-on`, { scale: 0.4 }, { scale: 1, duration: 0.3, ease: "back.out(3)", immediateRender: false }, o.t);
+        } else if (k === "ring") {
+          tl.fromTo(el, { scale: 1.6, rotation: -20 }, { scale: 1, rotation: 0, duration: 0.3, ease: "power3.out", immediateRender: false }, o.t);
+        }
+        tl.set(el, { opacity: 0 }, o.end);
+      });
+      // Sterne stürzen bei "scheiße" ab
+      const starOv = D.ovs.find((o) => o.kind === "stars");
+      const crash = D.ovs.find((o) => o.kind === "stamp red" && o.t > starOv.t);
+      tl.set(`#${starOv.id} .s-on`, { opacity: 0 }, crash.t);
+      tl.fromTo(`#${starOv.id} .s-off`, { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.2, ease: "bounce.out", immediateRender: false }, crash.t);
+
+      // Endkarte
+      tl.fromTo("#endcard", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out", immediateRender: false }, D.endCard);
+      tl.fromTo("#ec-handle", { scale: 1.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power4.out", immediateRender: false }, D.endCard + 0.05);
+      tl.fromTo("#ec-part", { scale: 0, rotation: 10 }, { scale: 1, rotation: -3, duration: 0.35, ease: "back.out(2.5)", immediateRender: false }, D.endCard + 0.45);
+      tl.fromTo("#ec-motto", { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, D.endCard + 0.9);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

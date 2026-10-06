@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>ZweitaktAssis – Schweiß-Vlog</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Anton";
+        src: url("assets/fonts/anton-latin.woff2") format("woff2");
+        font-weight: 400;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter-latin.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      :root {
+        --ink: #0b0b0a;
+        --yellow: #f2c200;
+        --rust: #d9541e;
+        --red: #e8392b;
+        --paper: #f4efe6;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+        font-family: "Inter", sans-serif;
+        color: var(--paper);
+      }
+      #stage,
+      .vwrap,
+      .vpunch {
+        position: absolute;
+        inset: 0;
+      }
+      .vid {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .layer {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      #shade {
+        background:
+          linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 22%),
+          linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 38%);
+        z-index: 20;
+      }
+      #flash {
+        background: #fff;
+        opacity: 0;
+        z-index: 80;
+      }
+
+      /* ---------- Untertitel ---------- */
+      #caps {
+        position: absolute;
+        left: 50px;
+        right: 50px;
+        top: 1250px;
+        height: 300px;
+        z-index: 40;
+      }
+      .cap {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: center;
+        gap: 6px 22px;
+        opacity: 0;
+      }
+      .cw {
+        display: block;
+        font-family: "Anton", sans-serif;
+        font-size: 96px;
+        line-height: 1.05;
+        text-transform: uppercase;
+        color: #fff;
+        paint-order: stroke fill;
+        -webkit-text-stroke: 14px #000;
+        text-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+      }
+
+      /* ---------- Overlays ---------- */
+      .ov {
+        position: absolute;
+        z-index: 50;
+        opacity: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      .ov span {
+        display: block;
+      }
+      .banner {
+        left: 60px;
+        right: 60px;
+        top: 200px;
+      }
+      .banner span {
+        background: var(--yellow);
+        color: var(--ink);
+        font-family: "Anton", sans-serif;
+        font-size: 74px;
+        line-height: 1.02;
+        text-transform: uppercase;
+        padding: 18px 30px 12px;
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+        transform: rotate(-2deg);
+        max-width: 960px;
+      }
+      .banner.b2 {
+        top: 360px;
+      }
+      .banner.b2 span {
+        background: var(--paper);
+        transform: rotate(2deg);
+      }
+      .stamp {
+        left: 40px;
+        right: 40px;
+        top: 700px;
+      }
+      .stamp span {
+        font-family: "Anton", sans-serif;
+        font-size: 110px;
+        line-height: 0.98;
+        text-transform: uppercase;
+        color: var(--yellow);
+        border: 12px solid var(--yellow);
+        padding: 24px 34px 14px;
+        background: rgba(0, 0, 0, 0.45);
+        transform: rotate(-7deg);
+        max-width: 940px;
+      }
+      .stamp.red span {
+        color: var(--red);
+        border-color: var(--red);
+      }
+      .big {
+        left: 0;
+        right: 0;
+        top: 740px;
+      }
+      .big span {
+        font-family: "Anton", sans-serif;
+        font-size: 190px;
+        line-height: 1;
+        text-transform: uppercase;
+        color: #fff;
+        paint-order: stroke fill;
+        -webkit-text-stroke: 18px #000;
+      }
+      .sticker {
+        right: 70px;
+        top: 560px;
+      }
+      .sticker span {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Inter", sans-serif;
+        font-weight: 900;
+        font-size: 46px;
+        padding: 18px 30px;
+        border-radius: 999px;
+        transform: rotate(4deg);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+      }
+      .wow span {
+        font-family: "Anton", sans-serif;
+        font-size: 150px;
+        color: var(--yellow);
+        paint-order: stroke fill;
+        -webkit-text-stroke: 14px #000;
+      }
+      .w1 { left: 70px; top: 520px; }
+      .w2 { right: 90px; top: 640px; }
+      .w3 { left: 160px; top: 860px; }
+      .w4 { right: 60px; top: 960px; }
+      .w5 { left: 80px; top: 1080px; }
+      .w6 { right: 150px; top: 380px; }
+      .w7 { left: 400px; top: 560px; }
+      .w2 span, .w5 span { color: var(--paper); }
+      .w4 span, .w7 span { color: var(--rust); }
+      .stars {
+        left: 0;
+        right: 0;
+        top: 470px;
+      }
+      .stars span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        font-size: 120px;
+        line-height: 1;
+        color: var(--yellow);
+        paint-order: stroke fill;
+        -webkit-text-stroke: 8px #000;
+        letter-spacing: 0.08em;
+      }
+      .stars .s-off {
+        opacity: 0;
+      }
+      .ring {
+        left: 290px;
+        top: 760px;
+        width: 500px;
+        height: 330px;
+        border: 12px solid var(--red);
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.35);
+      }
+
+      /* ---------- Endkarte ---------- */
+      #endcard {
+        z-index: 60;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 26px;
+        padding-bottom: 300px;
+        background: radial-gradient(ellipse 90% 60% at 50% 45%, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.35));
+        opacity: 0;
+      }
+      #ec-handle {
+        font-family: "Anton", sans-serif;
+        font-size: 128px;
+        color: #fff;
+        text-transform: uppercase;
+      }
+      #ec-part {
+        display: block;
+        background: var(--yellow);
+        color: var(--ink);
+        font-family: "Anton", sans-serif;
+        font-size: 96px;
+        padding: 16px 40px 8px;
+        text-transform: uppercase;
+        transform: rotate(-3deg);
+      }
+      #ec-motto {
+        font-family: "Inter", sans-serif;
+        font-weight: 800;
+        font-size: 34px;
+        letter-spacing: 0.32em;
+        text-transform: uppercase;
+        color: rgba(244, 239, 230, 0.75);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="{{DUR}}" data-width="1080" data-height="1920">
+      <div id="stage">
+{{CLIPS}}
+      </div>
+      <div id="shade" class="layer"></div>
+{{OVS}}
+      <div id="caps">
+{{CAPS}}
+      </div>
+      <div id="endcard" class="layer">
+        <div id="ec-handle">@zweitaktassis</div>
+        <div id="ec-part">Teil 2 kommt 🔧</div>
+        <div id="ec-motto">Pfusch ist Kunst</div>
+      </div>
+      <div id="flash" class="layer" data-layout-allow-occlusion></div>
+
+      <audio id="beat" src="assets/audio/beat.mp3" data-start="0" data-duration="{{DUR}}" data-track-index="20" data-volume="1" data-automation="{{BEAT_AUTO}}"></audio>
+{{SFX}}
+    </div>
+
+    <script>
+      const D = {{DATA}};
+      const tl = gsap.timeline({ paused: true });
+      const clipAt = (t) => D.clips.find((c) => t >= c.start - 1e-3 && t < c.start + c.dur) || D.clips[D.clips.length - 1];
+
+      // Videos: leichter Push-in pro Clip, Punch-ins auf die Gags
+      D.clips.forEach((c) => {
+        tl.fromTo(`#w-${c.id}`, { scale: 1 }, { scale: 1.05, duration: c.dur, ease: "none" }, c.start);
+      });
+      D.punch.forEach((t) => {
+        const c = clipAt(t);
+        tl.to(`#w-${c.id} .vpunch`, { keyframes: { scale: [1, 1.22, 1.18] }, duration: 0.35, ease: "power3.out" }, t);
+      });
+      D.shake.forEach((t) => {
+        tl.to("#stage", { keyframes: { x: [0, -18, 16, -10, 6, 0], y: [0, 10, -8, 5, 0, 0] }, duration: 0.32, ease: "none" }, t);
+      });
+      D.cuts.forEach((t) => {
+        tl.fromTo("#flash", { opacity: 0.18 }, { opacity: 0, duration: 0.12, ease: "power1.out", immediateRender: false }, t);
+      });
+
+      // Untertitel: Gruppe ein, aktives Wort gelb
+      D.caps.forEach((c) => {
+        tl.set(`#${c.id}`, { opacity: 1 }, c.start);
+        c.words.forEach((t, j) => {
+          const w = `#${c.id}w${j}`;
+          tl.fromTo(w, { scale: 0.86, color: "#ffffff" }, { scale: 1, color: "#f2c200", duration: 0.12, ease: "back.out(3)", immediateRender: false }, t);
+          const next = j + 1 < c.words.length ? c.words[j + 1] : c.end;
+          tl.set(w, { color: "#ffffff" }, Math.max(t + 0.13, next));
+        });
+        tl.set(`#${c.id}`, { opacity: 0 }, c.end);
+      });
+
+      // Overlays
+      D.ovs.forEach((o) => {
+        const k = o.kind.split(" ")[0];
+        const el = `#${o.id}`;
+        tl.set(el, { opacity: 1 }, o.t);
+        if (k === "banner") {
+          tl.fromTo(`${el} span`, { y: -60, scale: 0.8 }, { y: 0, scale: 1, duration: 0.3, ease: "back.out(2.4)", immediateRender: false }, o.t);
+        } else if (k === "stamp") {
+          tl.fromTo(`${el} span`, { scale: 2.3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.18, ease: "power4.in", immediateRender: false }, o.t - 0.1);
+        } else if (k === "big") {
+          tl.fromTo(`${el} span`, { scale: 0.3 }, { scale: 1, duration: 0.25, ease: "back.out(3)", immediateRender: false }, o.t);
+        } else if (k === "sticker") {
+          tl.fromTo(`${el} span`, { scale: 0, rotation: -25 }, { scale: 1, rotation: 0, duration: 0.35, ease: "back.out(3)", immediateRender: false }, o.t);
+        } else if (k === "wow") {
+          tl.fromTo(`${el} span`, { scale: 0, rotation: -20 }, { scale: 1, rotation: 8, duration: 0.22, ease: "back.out(4)", immediateRender: false }, o.t);
+        } else if (k === "stars") {
+          tl.fromTo(`${el} .s-on`, { scale: 0.4 }, { scale: 1, duration: 0.3, ease: "back.out(3)", immediateRender: false }, o.t);
+        } else if (k === "ring") {
+          tl.fromTo(el, { scale: 1.6, rotation: -20 }, { scale: 1, rotation: 0, duration: 0.3, ease: "power3.out", immediateRender: false }, o.t);
+        }
+        tl.set(el, { opacity: 0 }, o.end);
+      });
+      // Sterne stürzen bei "scheiße" ab
+      const starOv = D.ovs.find((o) => o.kind === "stars");
+      const crash = D.ovs.find((o) => o.kind === "stamp red" && o.t > starOv.t);
+      tl.set(`#${starOv.id} .s-on`, { opacity: 0 }, crash.t);
+      tl.fromTo(`#${starOv.id} .s-off`, { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.2, ease: "bounce.out", immediateRender: false }, crash.t);
+
+      // Endkarte
+      tl.fromTo("#endcard", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out", immediateRender: false }, D.endCard);
+      tl.fromTo("#ec-handle", { scale: 1.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power4.out", immediateRender: false }, D.endCard + 0.05);
+      tl.fromTo("#ec-part", { scale: 0, rotation: 10 }, { scale: 1, rotation: -3, duration: 0.35, ease: "back.out(2.5)", immediateRender: false }, D.endCard + 0.45);
+      tl.fromTo("#ec-motto", { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, D.endCard + 0.9);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

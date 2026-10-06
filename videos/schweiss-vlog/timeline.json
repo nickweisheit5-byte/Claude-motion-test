@@ -1,0 +1,206 @@
+[
+ {
+  "id": "s01",
+  "a": [
+   0.0,
+   1.45
+  ],
+  "v": 0.0,
+  "cx": 480,
+  "label": "Cold open: Versprecher",
+  "dur": 1.45,
+  "start": 0.0
+ },
+ {
+  "id": "s02",
+  "a": [
+   3.3,
+   9.5
+  ],
+  "v": 3.3,
+  "cx": 480,
+  "label": "Freunde des gepflegten Zweitakt-Motorrennsports, wow",
+  "dur": 6.2,
+  "start": 1.45
+ },
+ {
+  "id": "s03",
+  "a": [
+   9.8,
+   13.7
+  ],
+  "v": 9.8,
+  "cx": 590,
+  "label": "Moped Nr. 2 / Nr. 3",
+  "dur": 3.9,
+  "start": 7.65
+ },
+ {
+  "id": "s04",
+  "a": [
+   21.55,
+   24.85
+  ],
+  "v": 21.55,
+  "cx": 500,
+  "label": "Rahmen in Bearbeitung",
+  "dur": 3.3,
+  "start": 11.55
+ },
+ {
+  "id": "s05",
+  "a": [
+   25.95,
+   29.95
+  ],
+  "v": 25.95,
+  "cx": 490,
+  "label": "F\u00fclldraht-Schwei\u00dfger\u00e4t",
+  "dur": 4.0,
+  "start": 14.85
+ },
+ {
+  "id": "s06",
+  "a": [
+   35.65,
+   40.1
+  ],
+  "v": 59.3,
+  "cx": 480,
+  "label": "Schwei\u00dfn\u00e4hte aalglatt (B-Roll Naht)",
+  "dur": 4.45,
+  "start": 18.85
+ },
+ {
+  "id": "s07",
+  "a": [
+   49.9,
+   54.55
+  ],
+  "v": 49.9,
+  "cx": 480,
+  "label": "Verst\u00e4rkungsbleche",
+  "dur": 4.65,
+  "start": 23.3
+ },
+ {
+  "id": "s08",
+  "a": [
+   76.25,
+   78.8
+  ],
+  "v": 76.25,
+  "cx": 500,
+  "label": "Wie bei Luca, nur besser",
+  "dur": 2.55,
+  "start": 27.95
+ },
+ {
+  "id": "s09",
+  "a": [
+   82.2,
+   84.0
+  ],
+  "v": 82.2,
+  "cx": 300,
+  "label": "Blick zu Luca",
+  "dur": 1.8,
+  "start": 30.5
+ },
+ {
+  "id": "s10",
+  "a": [
+   85.4,
+   85.9
+  ],
+  "v": 85.4,
+  "cx": 620,
+  "label": "Oh oh",
+  "dur": 0.5,
+  "start": 32.3
+ },
+ {
+  "id": "s11",
+  "a": [
+   87.4,
+   93.2
+  ],
+  "v": 87.4,
+  "cx": 480,
+  "label": "Fantastisch angepasstes Blech",
+  "dur": 5.8,
+  "start": 32.8
+ },
+ {
+  "id": "s12",
+  "a": [
+   93.8,
+   95.8
+  ],
+  "v": 93.8,
+  "cx": 480,
+  "label": "Wer braucht das schon",
+  "dur": 2.0,
+  "start": 38.6
+ },
+ {
+  "id": "s13",
+  "a": [
+   101.95,
+   105.25
+  ],
+  "v": 101.95,
+  "cx": 500,
+  "label": "Echte Profis",
+  "dur": 3.3,
+  "start": 40.6
+ },
+ {
+  "id": "s14",
+  "a": [
+   105.8,
+   110.7
+  ],
+  "v": 105.8,
+  "cx": 560,
+  "label": "Echter Rennfahrer",
+  "dur": 4.9,
+  "start": 43.9
+ },
+ {
+  "id": "s15",
+  "a": [
+   111.25,
+   114.9
+  ],
+  "v": 111.25,
+  "cx": 470,
+  "label": "Keine echten Tuner / Motto",
+  "dur": 3.65,
+  "start": 48.8
+ },
+ {
+  "id": "s16",
+  "a": [
+   115.0,
+   118.6
+  ],
+  "v": 115.0,
+  "cx": 500,
+  "label": "B-Roll rote Simson",
+  "dur": 3.6,
+  "start": 52.45
+ },
+ {
+  "id": "s17",
+  "a": [
+   120.3,
+   123.8
+  ],
+  "v": 120.3,
+  "cx": 470,
+  "label": "Immer auf den Punkt",
+  "dur": 3.5,
+  "start": 56.05
+ }
+]
